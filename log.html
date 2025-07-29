@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>記録一覧</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+      background-color: #f2f9ff;
+    }
+    h1 {
+      text-align: center;
+    }
+    .record {
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 600px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .date {
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>発作の記録一覧</h1>
+  <div id="recordList"></div>
+
+  <script>
+    const recordList = document.getElementById('recordList');
+    const records = JSON.parse(localStorage.getItem('claustroRecords') || '[]');
+
+    if (records.length === 0) {
+      recordList.innerHTML = "<p>記録がまだありません。</p>";
+    } else {
+      records.forEach((r) => {
+        const div = document.createElement('div');
+        div.className = 'record';
+        div.innerHTML = `
+          <div class="date">📅 ${r.date}</div>
+          <div>🔢 発作の強さ：${r.level}</div>
+          <div>📝 状況：${r.situation}</div>
+          <div>🧘‍♀️ 対処法：${r.coping}</div>
+        `;
+        recordList.appendChild(div);
+      });
+    }
+  </script>
+  <button 
+  onclick="location.href='index.html'" 
+  style="
+    display: block;
+    margin: 30px auto 0;
+    padding: 12px 24px;
+    background-color: #4ca7db;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    max-width: 200px;
+  "
+>
+  ホームに戻る
+</button>
+
+</body>
+</html>

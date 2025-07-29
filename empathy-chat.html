@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>共感チャット - 閉所恐怖症サポート</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", sans-serif;
+      background-color: #eef6fa;
+      color: #2c3e50;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    form {
+      background: white;
+      padding: 20px 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 2px solid #4ca7db;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      resize: vertical;
+      font-family: "Yu Gothic", sans-serif;
+      color: #2c3e50;
+    }
+    button {
+      background-color: #4ca7db;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #357abd;
+    }
+    .chat-list {
+      max-height: 400px;
+      overflow-y: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+    }
+    .chat-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .chat-item:last-child {
+      border-bottom: none;
+    }
+    .chat-name {
+      font-weight: 700;
+      color: #4ca7db;
+      margin-bottom: 5px;
+    }
+    .chat-message {
+      white-space: pre-wrap;
+    }
+    .return-home {
+      margin-top: 25px;
+      text-align: center;
+    }
+    .return-home button {
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>共感チャット</h1>
+
+  <form id="chatForm">
+    <label for="name">ニックネーム</label>
+    <input type="text" id="name" placeholder="名前（例：たなか）" required maxlength="20" />
+
+    <label for="message">メッセージ</label>
+    <textarea id="message" rows="4" placeholder="気持ちや体験、励ましの言葉などをどうぞ" required></textarea>
+
+    <button type="submit">投稿する</button>
+  </form>
+
+  <div class="chat-list" id="chatList">
+    <!-- 投稿がここに表示されます -->
+  </div>
+
+  <div class="return-home">
+    <button onclick="location.href='index.html'">ホームに戻る</button>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById('chatForm');
+    const chatList = document.getElementById('chatList');
+
+    // 投稿をローカルストレージから取得
+    function loadChats() {
+      const chats = JSON.parse(localStorage.getItem('claustroChats') || '[]');
+      chatList.innerHTML = '';
+
+      chats.reverse().forEach(chat => {
+        const div = document.createElement('div');
+        div.className = 'chat-item';
+        div.innerHTML = `
+          <div class="chat-name">${escapeHtml(chat.name)}</div>
+          <div class="chat-message">${escapeHtml(chat.message)}</div>
+          <div class="chat-date" style="font-size:12px; color:#888; margin-top:4px;">${chat.date}</div>
+        `;
+        chatList.appendChild(div);
+      });
+    }
+
+    // HTMLエスケープ（簡易）
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[m];
+      });
+    }
+
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = chatForm.name.value.trim();
+      const message = chatForm.message.value.trim();
+      if (!name || !message) return;
+
+      const date = new Date().toLocaleString();
+
+      const chats = JSON.parse(localStorage.getItem('claustroChats') || '[]');
+      chats.push({ name, message, date });
+      localStorage.setItem('claustroChats', JSON.stringify(chats));
+
+      chatForm.reset();
+      loadChats();
+    });
+
+    loadChats();
+  </script>
+
+</body>
+</html>

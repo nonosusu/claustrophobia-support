@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>発作の記録 - 閉所恐怖症サポート</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", sans-serif;
+      background-color: #eef6fa;
+      color: #2c3e50;
+      padding: 40px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    form {
+      background: white;
+      border-radius: 12px;
+      padding: 30px 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 2px solid #4ca7db;
+      border-radius: 8px;
+      resize: vertical;
+      box-sizing: border-box;
+      font-family: "Yu Gothic", sans-serif;
+      color: #2c3e50;
+      transition: border-color 0.3s;
+    }
+    select:focus, textarea:focus {
+      border-color: #357abd;
+      outline: none;
+      background-color: #f0f8ff;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px 0;
+      background-color: #4ca7db;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 700;
+    }
+    button:hover {
+      background-color: #357abd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>発作の記録</h1>
+
+  <form id="recordForm">
+    <label for="level">発作の強さ（1＝軽度〜5＝重度）</label>
+    <select id="level" required>
+      <option value="" disabled selected>選択してください</option>
+      <option value="1">1：軽度</option>
+      <option value="2">2</option>
+      <option value="3">3：中程度</option>
+      <option value="4">4</option>
+      <option value="5">5：かなり強い</option>
+    </select>
+
+    <label for="situation">そのときの状況</label>
+    <textarea id="situation" rows="3" placeholder="例：エレベーターの中" required></textarea>
+
+    <label for="coping">どう対処した？</label>
+    <textarea id="coping" rows="3" placeholder="例：深呼吸して気をそらした"></textarea>
+
+    <button type="submit">記録する</button>
+    <button type="button" onclick="location.href='index.html'" style="margin-top: 15px; background-color: #357abd;">
+  ホームに戻る
+</button>
+
+  </form>
+
+  <script>
+    document.getElementById('recordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const date = new Date().toLocaleString();
+      const level = document.getElementById('level').value;
+      const situation = document.getElementById('situation').value;
+      const coping = document.getElementById('coping').value;
+
+      const record = { date, level, situation, coping };
+
+      // ローカルストレージに保存
+      const records = JSON.parse(localStorage.getItem('claustroRecords') || '[]');
+      records.push(record);
+      localStorage.setItem('claustroRecords', JSON.stringify(records));
+
+      alert("記録しました！");
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

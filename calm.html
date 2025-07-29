@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>呼吸法・安心ガイド</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", sans-serif;
+      background-color: #f0faff;
+      padding: 40px;
+      text-align: center;
+      line-height: 1.8;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+    .section {
+      margin: 40px auto;
+      max-width: 700px;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .section h2 {
+      font-size: 22px;
+      color: #0077aa;
+      margin-bottom: 10px;
+    }
+    .section p, .section ul {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4ca7db;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #357abd;
+    }
+    #homeBtn, #langToggle {
+      position: fixed;
+      top: 10px;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      z-index: 100;
+    }
+    #homeBtn {
+      left: 10px;
+    }
+    #langToggle {
+      right: 10px;
+    }
+    #breathingGuide {
+      font-size: 20px;
+      margin-top: 15px;
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      min-height: 40px;
+    }
+    #circle {
+      margin: 20px auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #4ca7db;
+      opacity: 0.6;
+      transition: width 4s ease-in-out, height 4s ease-in-out, opacity 4s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="homeBtn" onclick="location.href='index.html'">🏠 ホームに戻る</button>
+  <button id="langToggle" onclick="toggleLanguage()">🌐 English</button>
+
+  <h1 id="mainTitle">呼吸法・安心ガイド</h1>
+
+  <div class="section">
+    <h2>呼吸法の紹介</h2>
+    <p id="introText">ゆっくり呼吸を整えて気持ちを落ち着けるために、4秒吸って、4秒止めて、4秒吐いて、4秒止める「ボックス呼吸」を試してみましょう。</p>
+    <div id="breathingGuide">準備ができたら下のボタンを押してください</div>
+    <div id="circle"></div>
+    <button id="startBtn" onclick="startBreathingGuide()">▶ 呼吸ガイドを開始</button>
+  </div>
+
+  <div class="section">
+    <h2>落ち着く姿勢のポイント</h2>
+    <ul id="postureList">
+      <li>背筋を伸ばし、楽な姿勢で座るか横になる</li>
+      <li>肩の力を抜いてリラックスする</li>
+      <li>目を閉じるか、視線を柔らかく遠くに向ける</li>
+      <li>深呼吸と合わせてゆったり過ごす</li>
+    </ul>
+  </div>
+
+  <script>
+    let currentLang = 'ja';
+
+    const messages = {
+      ja: {
+        mainTitle: '呼吸法・安心ガイド',
+        introText: 'ゆっくり呼吸を整えて気持ちを落ち着けるために、4秒吸って、4秒止めて、4秒吐いて、4秒止める「ボックス呼吸」を試してみましょう。',
+        breathingReady: '準備ができたら下のボタンを押してください',
+        breathingSteps: ['4秒吸って…', '止めて…', '4秒吐いて…', '止めて…'],
+        breathingStartMsg: '深呼吸をはじめましょう…',
+        breathingDone: 'お疲れさまでした。ゆっくりしていてください。',
+        postureList: [
+          '背筋を伸ばし、楽な姿勢で座るか横になる',
+          '肩の力を抜いてリラックスする',
+          '目を閉じるか、視線を柔らかく遠くに向ける',
+          '深呼吸と合わせてゆったり過ごす'
+        ],
+        langButton: '🌐 English',
+        homeButton: '🏠 ホームに戻る',
+      },
+      en: {
+        mainTitle: 'Breathing & Calm Guide',
+        introText: 'Try the “Box Breathing”: breathe in for 4 seconds, hold for 4 seconds, breathe out for 4 seconds, then hold for 4 seconds to help calm your mind.',
+        breathingReady: 'Press the button below when you are ready',
+        breathingSteps: ['Breathe in for 4 seconds...', 'Hold...', 'Breathe out for 4 seconds...', 'Hold...'],
+        breathingStartMsg: "Let's start deep breathing...",
+        breathingDone: 'Good job! Take your time and relax.',
+        postureList: [
+          'Sit or lie down comfortably with your back straight',
+          'Relax your shoulders',
+          'Close your eyes or gaze softly into the distance',
+          'Combine with deep breaths and relax'
+        ],
+        langButton: '🌐 日本語',
+        homeButton: '🏠 Back to Home',
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ja' ? 'en' : 'ja';
+      const lang = messages[currentLang];
+
+      document.getElementById('mainTitle').innerText = lang.mainTitle;
+      document.getElementById('introText').innerText = lang.introText;
+      document.getElementById('breathingGuide').innerText = lang.breathingReady;
+      document.getElementById('startBtn').innerText = '▶ ' + (currentLang === 'ja' ? '呼吸ガイドを開始' : 'Start Breathing Guide');
+
+      const ul = document.getElementById('postureList');
+      ul.innerHTML = '';
+      lang.postureList.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+
+      document.getElementById('langToggle').innerText = lang.langButton;
+      document.getElementById('homeBtn').innerText = lang.homeButton;
+    }
+
+    function speak(text) {
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = currentLang === 'ja' ? 'ja-JP' : 'en-US';
+      utterance.rate = 0.9;       // 少しゆっくりめ
+      utterance.pitch = 1.0;      // 標準
+      utterance.volume = 1.0;     // 音量は最大
+      const voices = speechSynthesis.getVoices();
+      if (voices.length) {
+        const preferred = voices.find(v => v.lang === utterance.lang && (v.name.includes("Google") || v.name.includes("Microsoft") || v.name.includes("Samantha")));
+        if (preferred) utterance.voice = preferred;
+      }
+      speechSynthesis.speak(utterance);
+    }
+
+    // 呼吸ガイド＆音声＆アニメーション
+    function startBreathingGuide() {
+      const guide = document.getElementById('breathingGuide');
+      const circle = document.getElementById('circle');
+      const steps = messages[currentLang].breathingSteps;
+      let count = 0;
+      guide.innerText = messages[currentLang].breathingStartMsg;
+      speak(guide.innerText);
+      document.getElementById('startBtn').disabled = true;
+
+      const interval = setInterval(() => {
+        const stepText = steps[count % steps.length];
+        guide.innerText = stepText;
+        speak(stepText);
+
+        if (count % steps.length === 0) {
+          circle.style.width = '150px';
+          circle.style.height = '150px';
+          circle.style.opacity = '0.9';
+        } else if (count % steps.length === 2) {
+          circle.style.width = '90px';
+          circle.style.height = '90px';
+          circle.style.opacity = '0.6';
+        }
+
+        count++;
+        if (count > 12) {
+          clearInterval(interval);
+          guide.innerText = messages[currentLang].breathingDone;
+          speak(guide.innerText);
+          document.getElementById('startBtn').disabled = false;
+          circle.style.width = '120px';
+          circle.style.height = '120px';
+          circle.style.opacity = '0.6';
+        }
+      }, 4000);
+    }
+
+    window.speechSynthesis.onvoiceschanged = () => {};
+  </script>
+</body>
+</html>
