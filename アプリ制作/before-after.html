@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>発作時の説明</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", sans-serif;
+      background-color: #f0faff;
+      padding: 40px;
+      text-align: center;
+      line-height: 1.8;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+    .section {
+      margin: 40px auto;
+      max-width: 700px;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .section h2 {
+      font-size: 22px;
+      color: #0077aa;
+      margin-bottom: 10px;
+    }
+    .section p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4ca7db;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #357abd;
+    }
+    #langToggle, #homeBtn {
+      position: fixed;
+      top: 10px;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+    #langToggle {
+      right: 10px;
+    }
+    #homeBtn {
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="homeBtn" onclick="location.href='index.html'">🏠 ホームに戻る</button>
+  <button id="langToggle" onclick="toggleLanguage()">🌐 English</button>
+
+  <h1 id="mainTitle">発作時のお願い</h1>
+
+  <div class="section">
+    <h2 id="titleBefore">発作の前</h2>
+    <p id="text-before">
+      私は狭いところが苦手で、不安になったり発作が出ることがあります。そっと見守ってもらえると嬉しいです。
+    </p>
+    <button onclick="speak('before')">▶ 読み上げ</button>
+  </div>
+
+  <div class="section">
+    <h2 id="titleAfter">発作の後</h2>
+    <p id="text-after">
+      今ちょっと、不安な気持ちが強くて、少しだけそっとしておいてほしいです。落ち着いたら自分から話しますね。
+    </p>
+    <button onclick="speak('after')">▶ 読み上げ</button>
+  </div>
+
+  <div class="section">
+    <h2 id="titleTips">対処法のお願い</h2>
+    <p id="text-tips">
+      声をかけずに静かにしてくれるだけでも落ち着きやすいです。優しい気持ちでそばにいてくれると、とても助かります。
+    </p>
+    <button onclick="speak('tips')">▶ 読み上げ</button>
+  </div>
+
+  <script>
+    let currentLang = 'ja';
+
+    const messages = {
+      ja: {
+        mainTitle: '発作時のお願い',
+        titleBefore: '発作の前',
+        titleAfter: '発作の後',
+        titleTips: '対処法のお願い',
+        before: '私は狭いところが苦手で、不安になったり発作が出ることがあります。そっと見守ってもらえると嬉しいです。',
+        after: '今ちょっと、不安な気持ちが強くて、少しだけそっとしておいてほしいです。落ち着いたら自分から話しますね。',
+        tips: '声をかけずに静かにしてくれるだけでも落ち着きやすいです。優しい気持ちでそばにいてくれると、とても助かります。'
+      },
+      en: {
+        mainTitle: 'Support Request During a Panic Attack',
+        titleBefore: 'Before the Attack',
+        titleAfter: 'After the Attack',
+        titleTips: 'How You Can Help',
+        before: "I'm sensitive to enclosed spaces. I might become anxious or experience a panic attack. It helps me a lot if you can just stay calm nearby.",
+        after: "I'm feeling overwhelmed right now. I’d like to be left alone for a little while. I’ll reach out when I feel better.",
+        tips: "Just being quietly nearby helps a lot. You don’t need to say anything — your presence is enough. Thank you."
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ja' ? 'en' : 'ja';
+      const lang = messages[currentLang];
+      document.getElementById('mainTitle').innerText = lang.mainTitle;
+      document.getElementById('titleBefore').innerText = lang.titleBefore;
+      document.getElementById('titleAfter').innerText = lang.titleAfter;
+      document.getElementById('titleTips').innerText = lang.titleTips;
+      document.getElementById('text-before').innerText = lang.before;
+      document.getElementById('text-after').innerText = lang.after;
+      document.getElementById('text-tips').innerText = lang.tips;
+      document.getElementById('langToggle').innerText = currentLang === 'ja' ? '🌐 English' : '🌐 日本語';
+    }
+
+    function speak(type) {
+      const text = messages[currentLang][type];
+      const utterance = new SpeechSynthesisUtterance("、" + text); // 日本語は「、」などで読み出しが安定しやすい
+      utterance.lang = currentLang === 'ja' ? 'ja-JP' : 'en-US';
+
+      // より滑らかな声を使う（日本語の中で最適なvoiceを選ぶ）
+      const voices = speechSynthesis.getVoices();
+      if (voices.length) {
+        const preferred = voices.find(v => v.lang === utterance.lang && v.name.includes("Google 日本語"));
+        if (preferred) utterance.voice = preferred;
+      }
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    // getVoicesが非同期で読み込まれる場合もあるので初回実行を保障
+    window.speechSynthesis.onvoiceschanged = () => {};
+  </script>
+
+</body>
+</html>

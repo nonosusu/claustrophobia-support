@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta charset="UTF-8">
+  <title>ホーム - 閉所恐怖症サポート</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #eef6fa;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    a button {
+      font-size: 16px;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #4ca7db;
+      color: white;
+      cursor: pointer;
+    }
+    a button:hover {
+      background-color: #357abd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>閉所恐怖症サポート</h1>
+
+  <div class="section">
+    <p>落ち着くためのガイド</p>
+    <a href="calm.html">
+      <button>🧘‍♀️ 呼吸法・安心ガイド</button>
+    </a>
+  </div>
+
+  <div class="section">
+  <p>発作時の周囲への説明</p>
+  <a href="before-after.html">
+    <button>📢 発作前・後の説明</button>
+  </a>
+</div>
+
+
+  <div class="section">
+    <p>他の人の体験を見る</p>
+    <a href="stories.html">
+      <button>💬 みんなのあるある・対処法</button>
+    </a>
+  </div>
+
+  <div class="section">
+  <p>みんなで話せる場</p>
+  <a href="empathy-chat.html">
+    <button>💬 共感チャット</button>
+  </a>
+</div>
+
+
+  <div class="section">
+    <p>あなた自身の記録</p>
+    <a href="record.html">
+      <button>📝 発作を記録する</button>
+    </a>
+    <a href="log.html">
+      <button>📜 記録一覧を見る</button>
+    </a>
+  </div>
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="ClaustrophobiaSupportBot"
+  agent-id="f322ca05-5cb8-4c13-9529-739e58da0114"
+  language-code="ja"
+></df-messenger>
+</body>
+</html>
